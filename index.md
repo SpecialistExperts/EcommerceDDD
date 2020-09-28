@@ -1,37 +1,102 @@
-## Welcome to GitHub Pages
+## Welcome to Ecommerce DDD
 
-You can use the [editor on GitHub](https://github.com/falberthen/EcommerceDDD/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
+My main goal with this project is to demonstrate how to build a full-stack application using principles of domain-driven design and SOLID to provide an expressive and cohesive code.
+Besides, provide an easy-to-use and scalable API to power a SPA application. Last but not least, I also demonstrate the powerful combination of the CQRS pattern and Event Sourcing. 
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+<br>The chosen domain was e-commerce, although this project is not intended to be a real or much less ideal implementation of e-commerce solution for production, it is capable of demonstrating a purchasing cycle that goes from product selection to final payment through established business rules.
 
-### Markdown
+<br>Thanks for getting here, and <b>let your star</b> if you liked it! I will always keep working to improve the project with optimizations, tests, and refactorings. 
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+<hr>
 
-```markdown
-Syntax highlighted code block
+### Screenshots 
 
-# Header 1
-## Header 2
-### Header 3
+<a href="https://raw.githubusercontent.com/falberthen/EcommerceDDD/master/Screenshots/login.png" target="_blank">
+<img src="https://raw.githubusercontent.com/falberthen/EcommerceDDD/master/Screenshots/login.png"/>
+</a>
+<br/><br/><br/>
+<a href="https://raw.githubusercontent.com/falberthen/EcommerceDDD/master/Screenshots/products.png" target="_blank">
+<img src="https://raw.githubusercontent.com/falberthen/EcommerceDDD/master/Screenshots/products.png" />
+</a>
 
-- Bulleted
-- List
+<br/><br/><br/>
+<a href="https://raw.githubusercontent.com/falberthen/EcommerceDDD/master/Screenshots/orders.png" target="_blank">
+<img src="https://raw.githubusercontent.com/falberthen/EcommerceDDD/master/Screenshots/orders.png" />
+</a>
 
-1. Numbered
-2. List
+<br/><br/>
+<a href="https://raw.githubusercontent.com/falberthen/EcommerceDDD/master/Screenshots/events.png" target="_blank">
+<img src="https://raw.githubusercontent.com/falberthen/EcommerceDDD/master/Screenshots/events.png" />
+</a>
 
-**Bold** and _Italic_ and `Code` text
+<hr>
 
-[Link](url) and ![Image](src)
-```
+### Architecture diagram
+<img src="https://raw.githubusercontent.com/falberthen/EcommerceDDD/master/Screenshots/Diagram.PNG"/>
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
+Following a typical clean architecture, each layer was designed to play a specific role, allowing low coupling and testability. You will find a quick summary about each layer below.
+<hr/>
 
-### Jekyll Themes
+### Domain Core
+The Domain Core layer establishes basic abstractions to be implemented in the lower layers. It forms the basis of the building blocks for the implementation of DDD, with abstract classes for Entity, Aggregate Root, Value Object and, interfaces for Repository, Unit of Work.
+<br/><br/>
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/falberthen/EcommerceDDD/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+### Domain
+The Domain layer is where the business lies. It has a modular (organized by folders) implementation of the classes that make up the e-commerce through <b>concrete</b> Aggregates, Entities, Value objects, Domain Services and Repository interfaces and Domain Events. All the business rules and invariants are written in the domain models or services to ensure domain integrity and proper flow.
+<br/><br/>
 
-### Support or Contact
+### Application
+The Application layer orchestrates the interactions between the external world (API/SPA) and domain. It does not contain business rules or knowledge. It does not have state reflecting the business situation, but it can have state that reflects the progress of a task for the user or the program. Since the project is based on CQRS/EventSourcing architecture, there are Commands, CommandHandlers, Queries, QueryHandlers, EventHandlers and some primary validation.
+<br/><br/>
 
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+### Infrastructure
+The Infrastructure layer takes care of the application's infrastructure and issues not related to the business itself. It is responsible for Database (ORM) creation, Domain Repository implementation, Identity authentication and User Claims, JWT Authentication, Tooling for processing and publishing messages and, Inversion of Control and all and everything we need to support the other layers.
+<br/><br/>
+
+### Presentation
+- <b>API</b>: This API provides all endpoints necessary to perform commands/queries to the Application. The routes are secured using policies that match to the user claims. 
+- <b>SPA</b>: Built using the ASPNET Core Web Application with Angular template. This SPA is a simple and lightweight application using modular components to provide a functional workflow and usability. It contains Angular/Typescript Models, Services, Pipes, Guards, Interceptors and secured routes. 
+- <b>Background Service</b>: Last but not least there's a background service listening to the Stored Events, processing and publishing them asynchronously. 
+<hr>
+
+### Mainly used technologies:
+<ul>
+  <li>
+    <a href='https://get.asp.net/'>ASP.NET Core</a> and <a href='https://msdn.microsoft.com/en-us/library/67ef8sbd.aspx'>C#</a>
+    for cross-platform back-end with:
+    <ul>
+      <li>.NET Core 3.1</li>
+      <li>Entity Framework Core 3.1</li>
+      <li>ASP.NET WebApi Core with JWT Bearer Authentication</li>
+      <li>ASP.NET Identity Core</li>
+      <li>MediatR</li>
+      <li>Automapper</li>
+      <li>Fluent Validation</li>
+      <li>NSubstitute</li>
+      <li>Swagger</li>
+      <li>HealthChecks</li>
+    </ul>
+  </li>
+  <li><a href='https://angular.io/' target="_blank">Angular 9</a> and <a href='http://www.typescriptlang.org/' target="_blank">
+    TypeScript</a> for the front-end with:</li>
+    <ul>
+      <li><a href='http://getbootstrap.com/'>Bootstrap</a> for layout and styling</li>
+      <li>NgBootstrap</li>
+      <li>Font Awesome</li>
+      <li>Toastr</li>
+      <li>Angular JWT</li>
+    </ul>
+</ul>
+
+<hr/>
+
+### What do you need to run it:
+
+<ul>
+  <li>The latest <a href="https://dotnet.microsoft.com/download">.NET Core SDK</a> and <a href="https://www.microsoft.com/en-us/sql-server/sql-server-downloads">SQL Server</a> for the back-end, and change the connection string values in appsettings.json if you need. <br>Of course you can use other database technologies, but you will have to setup Entity Framework to it.</li>
+  <li>Node for the front-end in case you need to install packages.</li>
+  <li>Run EcommerceDDD.DataSeed project to add some products.</li>
+  <li>Set EcommerceDDD.WebApp as Startup project.</li>
+</ul>
+
+When registering your customer for the first time, it will create the Identity tables. No database update / migration commands are needed.
